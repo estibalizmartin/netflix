@@ -84,6 +84,9 @@ SECRET_KEY = env("SECRET_KEY")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'OPTIONS': {
+            'options': '-c search_path=netflix'
+        },
         'NAME': env("DB_NAME"), 
         'USER': env("DB_USER"),
         'PASSWORD': env("DB_PASSWORD"),
@@ -91,7 +94,6 @@ DATABASES = {
         'PORT': env("DB_PORT")
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
