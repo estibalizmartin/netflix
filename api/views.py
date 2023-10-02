@@ -1,19 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Usuario
-from rest_framework import generics
-# from .serializers import CustomerSerializer
 
-class NetflixAPI(APIView):
+def list_users(request):
+    usuarios = Usuario.objects.all()
+    return render(request, 'list_users.html', { "usuarios": usuarios })
 
-    def get(self, request):
-        items = [
-            "apple",
-            "mango",
-            "grapes"
-        ]
-        response_data = {"datas": items}
-        return Response(response_data, status=status.HTTP_200_OK)
+def create_user(request):
+    usuario = Usuario(title = request.POST['title'], description = request.POST['description'])
+    usuario.save()
+    return redirect('/users/')
 
-class UsuarioList(generics.ListAPIView):
-    queryset = Usuario.objects.all()
-    serializer_class = CustomerSerializer
+def delete_user(request, id_usuario):
+    usuario = Usuario.objects.get(id = id_usuario)
+    usuario.delete()
+    return redirect('/users/')
