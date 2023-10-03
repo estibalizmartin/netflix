@@ -8,26 +8,18 @@
 from django.db import models
 
 
-class Formulario(models.Model):
-    id_formulario = models.AutoField(primary_key=True)
-    email = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='email', to_field='email')
-    asunto = models.CharField()
-    descripcion = models.TextField()
-    id_usuario = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 'formulario'
-
-
-class Listareproduccion(models.Model):
-    id_lista = models.AutoField(primary_key=True)
+class Usuario(models.Model):
+    id_usuario = models.AutoField(primary_key=True)
     nombre = models.CharField()
-    id_usuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='id_usuario')
+    apellidos = models.CharField()
+    email = models.CharField(unique=True)
+
+    def __str__(self) -> str:
+        return super().__str__()
 
     class Meta:
         managed = False
-        db_table = 'listareproduccion'
+        db_table = 'usuario'
 
 
 class Pelicula(models.Model):
@@ -42,6 +34,27 @@ class Pelicula(models.Model):
         db_table = 'pelicula'
 
 
+class Formulario(models.Model):
+    id_formulario = models.AutoField(primary_key=True)
+    email = models.ForeignKey(Usuario, models.DO_NOTHING, db_column='email', to_field='email')
+    asunto = models.CharField()
+    descripcion = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'formulario'
+
+
+class Listareproduccion(models.Model):
+    id_lista = models.AutoField(primary_key=True)
+    nombre = models.CharField()
+    id_usuario = models.ForeignKey(Usuario, models.DO_NOTHING, db_column='id_usuario')
+
+    class Meta:
+        managed = False
+        db_table = 'listareproduccion'
+
+
 class Peliculalistareproduccion(models.Model):
     id_pelicula = models.OneToOneField(Pelicula, models.DO_NOTHING, db_column='id_pelicula', primary_key=True)  # The composite primary key (id_pelicula, id_listareproduccion) found, that is not supported. The first column is selected.
     id_listareproduccion = models.ForeignKey(Listareproduccion, models.DO_NOTHING, db_column='id_listareproduccion')
@@ -50,17 +63,6 @@ class Peliculalistareproduccion(models.Model):
         managed = False
         db_table = 'peliculalistareproduccion'
         unique_together = (('id_pelicula', 'id_listareproduccion'),)
-
-
-class Usuario(models.Model):
-    id_usuario = models.AutoField(primary_key=True)
-    nombre = models.CharField()
-    apellidos = models.CharField()
-    email = models.CharField(unique=True)
-
-    class Meta:
-        managed = False
-        db_table = 'usuario'
 
 
 class Usuariopelicula(models.Model):

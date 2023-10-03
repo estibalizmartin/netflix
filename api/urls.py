@@ -1,8 +1,8 @@
 from django.urls import path
-from .views import list_users, create_user, delete_user
+from . import views
 
 urlpatterns = [
-    path('', list_users),
-    path('new/', create_user, name='create_user'),
-    path('delete_task/<int:id_usuario>', delete_user, name='delete_user')
+    path('', views.list_forms),
+    path('new/', views.create_form, name='create_form'),
+    path('delete_form/<int:id_formulario>/', views.delete_form, name='delete_form')
 ]
