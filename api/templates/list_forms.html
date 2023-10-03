@@ -9,40 +9,44 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'main.css' %}">
 </head>
-<body class="bg-dark">
-    <div class="col-md-4 offset-md-4">
-        {{error}}
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+                <h1 class="display-4 fw-bold">Buzón</h1>
 
-        <form action="{% url 'create_form' %}" method="POST" class="card card-body mb-2">
-            {% csrf_token %}
-
-            <label for="correo">Introduce tu correo electrónico:</label>
-            <input type="text" name="email" placeholder="Correo electrónico" class="form-control mb-2" autofocus>
-
-            <label for="asunto">Tipo de asunto (sugerencia, bug, etc.):</label>
-            <textarea name="asunto" id="asunto" rows="2" class="form-control mb-2" placeholder="Asunto"></textarea>
-
-            <label for="descripcion">Añade una breve descripción:</label>
-            <textarea name="descripcion" id="descripcion" rows="2" class="form-control mb-2" placeholder="Descripción"></textarea>
-            <button class="btn btn-primary">Save</button>
-        </form>
-
-        {% for formulario in formularios %}
-        <div class="list-group">
-            <div class="card card-body bg-secondary text-light d-flex flex-row justify-content-between mb-2">
-                <div>
-                    <h3 class="h6">{{formulario.asunto}}</h3>
-                    <p>{{formulario.descripcion}}</p>
-                </div>
-                <form action="{% url 'delete_form' formulario.id_formulario %}" method="POST">
+                <form action="{% url 'create_form' %}" method="POST" class="card card-body bg-secondary">
                     {% csrf_token %}
-                    <button class="btn btn-danger">Delete</button>
+        
+                    <label for="correo">Introduce tu correo electrónico:</label>
+                    <input type="text" name="email" placeholder="Correo electrónico" class="form-control mb-2" autofocus>
+        
+                    <label for="asunto">Tipo de asunto (sugerencia, bug, etc.):</label>
+                    <textarea name="asunto" id="asunto" rows="2" class="form-control mb-2" placeholder="Asunto"></textarea>
+        
+                    <label for="descripcion">Añade una breve descripción:</label>
+                    <textarea name="descripcion" id="descripcion" rows="2" class="form-control mb-2" placeholder="Descripción"></textarea>
+                    <button class="btn btn-success">Save</button>
                 </form>
+        
+                {% for formulario in formularios %}
+                <div class="list-group">
+                    <div class="card card-body text-black mt-2 d-flex flex-row justify-content-between">
+                        <div>
+                            <h3 class="h6">{{formulario.asunto}}</h3>
+                            <p>{{formulario.descripcion}}</p>
+                        </div>
+                        <form action="{% url 'delete_form' formulario.id_formulario %}" method="POST">
+                            {% csrf_token %}
+                            <button class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                {% empty %}
+                <h1 class="display-6 text-center">No data</h1>
+                {% endfor %}
             </div>
         </div>
-        {% empty %}
-        <h1 class="text-light">No forms yet</h1>
-        {% endfor %}
     </div>
 </body>
 </html>
