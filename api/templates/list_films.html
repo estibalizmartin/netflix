@@ -28,39 +28,19 @@
             </div>
         </div>
     </nav>
-        
+
     <div class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4">
-                <h1 class="display-4 fw-bold mt-4">Buzón</h1>
+                <h1 class="display-4 fw-bold mt-4">Películas</h1>
 
-                <form action="{% url 'create_form' %}" method="POST" class="card card-body bg-secondary">
-                    {% csrf_token %}
-        
-                    <label for="correo" class="mb-1">Introduce tu correo electrónico:</label>
-                    <input type="text" name="email" placeholder="Correo electrónico" class="form-control mb-2" autofocus>
-        
-                    <label for="asunto" class="mb-1">Tipo de asunto (sugerencia, bug, etc.):</label>
-                    <textarea name="asunto" id="asunto" rows="2" class="form-control mb-2" placeholder="Asunto"></textarea>
-        
-                    <label for="descripcion" class="mb-1">Añade una breve descripción:</label>
-                    <textarea name="descripcion" id="descripcion" rows="2" class="form-control mb-2" placeholder="Descripción"></textarea>
-                    <button class="btn btn-success">Save</button>
-                </form>
-        
-                <p class="text-center text-warning">{{error}}</p>
-
-                {% for formulario in formularios %}
+                {% for pelicula in peliculas %}
                 <div class="list-group">
                     <div class="card card-body text-black mt-2 d-flex flex-row justify-content-between">
                         <div>
-                            <h3 class="h6 fw-bold">{{formulario.asunto}}</h3>
-                            <p>{{formulario.descripcion}}</p>
+                            <h3 class="h6 fw-bold">{{pelicula.titulo}}</h3>
+                            <p>{{pelicula.director}}</p>
                         </div>
-                        <form action="{% url 'delete_form' formulario.id_formulario %}" method="POST">
-                            {% csrf_token %}
-                            <button class="btn btn-danger btn-sm">Delete</button>
-                        </form>
                     </div>
                 </div>
                 {% empty %}
