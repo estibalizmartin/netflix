@@ -13,7 +13,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4">
-                <h1 class="display-4 fw-bold">Buzón</h1>
+                <h1 class="display-4 fw-bold mt-2">Buzón</h1>
 
                 <form action="{% url 'create_form' %}" method="POST" class="card card-body bg-secondary">
                     {% csrf_token %}
@@ -29,6 +29,8 @@
                     <button class="btn btn-success">Save</button>
                 </form>
         
+                <p class="text-center text-warning">{{error}}</p>
+
                 {% for formulario in formularios %}
                 <div class="list-group">
                     <div class="card card-body text-black mt-2 d-flex flex-row justify-content-between">

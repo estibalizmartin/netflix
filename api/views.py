@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.core.exceptions import ObjectDoesNotExist
 from .models import Formulario, Usuario
 
 def list_forms(request):
@@ -21,6 +22,9 @@ def create_form(request):
     return redirect("/forms/")
 
 def delete_form(request, id_formulario):
-    formulario = Formulario.objects.get(id_formulario = id_formulario)
-    formulario.delete()
+    try:
+        formulario = Formulario.objects.get(id_formulario = id_formulario)
+        formulario.delete()
+    except ObjectDoesNotExist:
+        print("El usuario no existe.")
     return redirect("/forms/")
