@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import connection
 from .models import Formulario, Usuario, Pelicula
 
 pagina_principal = "/forms"
@@ -39,5 +40,13 @@ def delete_form(request, id_formulario):
     return redirect(pagina_principal)
 
 def list_films(request):
+    peliculas = Pelicula.objects.all()
+    return render(request, 'list_films.html', { "peliculas": peliculas })
+
+def seed_data(request):
+    with connection.cursor() as cursor:
+        cursor.execute(f'SET search_path = netflix')
+        cursor.execute(f'CALL CrearRegistros()')
+
     peliculas = Pelicula.objects.all()
     return render(request, 'list_films.html', { "peliculas": peliculas })
