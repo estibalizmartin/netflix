@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import connection
-from .models import Formulario, Usuario, Pelicula
+from .models import Formulario, Usuario, Pelicula, Usuariopelicula
 
-pagina_principal = "/forms"
+pagina_secundaria = "/forms"
+pagina_principal = "/films"
 errores = { "campos_requeridos": "Email, asunto y descripción son campos requeridos.", 
             "form_not_found": "Formulario inexistente."}
 
@@ -15,7 +16,11 @@ def list_forms(request):
 def create_form(request):
     usuario = Usuario.objects.get(email=request.POST["email"])
     if usuario is None:
-        Usuario(nombre=None, apellidos=None, email=request.POST["email"]).save()
+        Usuario(
+            nombre=None, 
+            apellidos=None, 
+            email=request.POST["email"]
+        ).save()
     new_asunto = request.POST["asunto"]
     new_descripcion = request.POST["descripcion"]
 
@@ -24,9 +29,13 @@ def create_form(request):
         return render(
             request, "list_forms.html", { "formularios": formularios, "error": errores['campos_requeridos'] }
         )
-    formulario = Formulario(email=usuario, asunto=new_asunto, descripcion=new_descripcion)
+    formulario = Formulario(
+        email=usuario, 
+        asunto=new_asunto, 
+        descripcion=new_descripcion
+    )
     formulario.save()
-    return redirect(pagina_principal)
+    return redirect(pagina_secundaria)
 
 def delete_form(request, id_formulario):
     try:
@@ -35,9 +44,9 @@ def delete_form(request, id_formulario):
     except ObjectDoesNotExist:
         formularios = Formulario.objects.all()
         return render(
-            request, "list_forms.html", { "formularios": formularios, "error": errores['form_not_found']}
+            request, "list_forms.html", { "formularios": formularios, "error": errores['form_not_found'] }
         )
-    return redirect(pagina_principal)
+    return redirect(pagina_secundaria)
 
 def list_films(request):
     peliculas = Pelicula.objects.all()
@@ -50,3 +59,17 @@ def seed_data(request):
 
     peliculas = Pelicula.objects.all()
     return render(request, 'list_films.html', { "peliculas": peliculas })
+
+def create_usuariopelicula(request):
+    usuario = Usuario.objects.get(id_usuario=1)
+    pelicula = Pelicula.objects.get(id_pelicula=1)
+
+    usuariopelicula = Usuariopelicula(
+        estado=True,
+        fechaestado="2023-10-10",
+        id_usuario=usuario,
+        id_pelicula=pelicula,
+        calificacion=2
+    )
+    usuariopelicula.save()
+    return redirect(pagina_principal)
