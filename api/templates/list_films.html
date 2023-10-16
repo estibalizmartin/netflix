@@ -29,7 +29,7 @@
         </div>
     </nav>
 
-    <!-- <div class="container">
+    <div class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4">
                 <h1 class="display-4 fw-bold mt-4">Películas</h1>
@@ -39,7 +39,9 @@
                     <div class="card card-body text-black mt-2 d-flex flex-row justify-content-between">
                         <div>
                             <h3 class="h6 fw-bold">{{pelicula.titulo}}</h3>
-                            <p>{{pelicula.director}}</p>
+                            <p>Director: {{pelicula.director}}</p>
+                            <p>Duración: {{pelicula.duracion}} minutos</p>
+                            <p>Calificación promedio: {{pelicula.calificacion_promedio|floatformat:"2"}}</p>
                         </div>
                     </div>
                 </div>
@@ -48,24 +50,7 @@
                 {% endfor %}
             </div>
         </div>
-    </div> -->
-
-    <header class="bg-dark text-white text-center py-3">
-        <h1>Películas</h1>
-    </header>
-
-    <main class="container">
-        <div class="movie-list">
-            {% for pelicula in peliculas %}
-            <div class="movie-card">
-                <h2>{{ pelicula.titulo }}</h2>
-                <p>Director: {{ pelicula.director }}</p>
-                <p>Duración: {{ pelicula.duracion }} minutos</p>
-                <p>Calificación promedio: {{ pelicula.calificacion_promedio|floatformat:"2" }}</p>
-            </div>
-            {% endfor %}
-        </div>
-    </main>
+    </div>
 
     <footer class="bg-dark text-white text-center py-3">
         <p>&copy; 2023 Tu Biblioteca de Películas</p>

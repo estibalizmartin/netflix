@@ -14,28 +14,32 @@ def list_forms(request):
     return render(request, 'list_forms.html', { "formularios": formularios })
 
 def create_form(request):
-    usuario = Usuario.objects.get(email=request.POST["email"])
-    if usuario is None:
-        Usuario(
-            nombre=None, 
-            apellidos=None, 
-            email=request.POST["email"]
-        ).save()
+    new_email = request.POST["email"] 
     new_asunto = request.POST["asunto"]
     new_descripcion = request.POST["descripcion"]
 
-    if usuario == "" or new_asunto == "" or new_descripcion == "":
+    try:
+        Usuario.objects.get(email=new_email)
+    except ObjectDoesNotExist:
+        Usuario(
+            nombre=None, 
+            apellidos=None, 
+            email=new_email
+        ).save()
+        
+    if new_email == "" or new_asunto == "" or new_descripcion == "":
         formularios = Formulario.objects.all()
         return render(
             request, "list_forms.html", { "formularios": formularios, "error": errores['campos_requeridos'] }
         )
-    formulario = Formulario(
-        email=usuario, 
-        asunto=new_asunto, 
-        descripcion=new_descripcion
-    )
-    formulario.save()
-    return redirect(pagina_secundaria)
+    else:
+        formulario = Formulario(
+            email=Usuario.objects.get(email=new_email), 
+            asunto=new_asunto, 
+            descripcion=new_descripcion
+        )
+        formulario.save()
+        return redirect(pagina_secundaria)
 
 def delete_form(request, id_formulario):
     try:
@@ -53,12 +57,16 @@ def list_films(request):
     return render(request, 'list_films.html', { "peliculas": peliculas })
 
 def seed_data(request):
-    with connection.cursor() as cursor:
-        cursor.execute(f'SET search_path = netflix')
-        cursor.execute(f'CALL CrearRegistros()')
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(f'SET search_path = netflix')
+            cursor.execute(f'CALL CrearRegistros()')
 
-    peliculas = Pelicula.objects.all()
-    return render(request, 'list_films.html', { "peliculas": peliculas })
+        peliculas = Pelicula.objects.all()
+        return render(request, 'list_films.html', { "peliculas": peliculas })
+    except:
+        print("Vacía la base de datos.")
+        return redirect(pagina_principal)
 
 def create_usuariopelicula(request):
     usuario = Usuario.objects.get(id_usuario=1)
