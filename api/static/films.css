@@ -1,0 +1,30 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #141414;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    padding: 20px;
+}
+
+/* Estilos del encabezado */
+header {
+    background-color: #141414;
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 36px;
+}
+
+/* Estilos de la lista de películas */
+.movie-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
